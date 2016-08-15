@@ -9,7 +9,6 @@
 
 var config = require('./config.json');
 var dl = require('./YTDownloader');
-// var dl = new Downloader();
 var ytSearch = require('youtube-search');
 var request = require('request');
 var fs = require('fs');
@@ -17,23 +16,15 @@ var cheerio = require('cheerio');
 // eslint-disable-next-line
 var colors = require('colors');
 
-
-// var lupus = require('lupus');
-// var YoutubeMp3Downloader = require('youtube-mp3-downloader');
-// var Q = require('q');
-// var id3 = require('id3js');
+// Global playlist var used to save _playlistData.json file
 var globalPlaylist;
 
 getSpotifyPlaylist(function(error, spotifyPlaylist) {
-    // console.log('Data object from Spotify playlist'.green);
     console.log('Reading the data file.'.blue);
     getLocalPlaylistData(spotifyPlaylist, function(err, localPlaylistData) {
         if (err) { throw err; }
-        // console.log('localPlaylistData+READ', localPlaylistData);
         checkIfDownloaded(localPlaylistData, spotifyPlaylist, function(err, localPlaylistData) {
             globalPlaylist = localPlaylistData;
-            // console.log('checkIfDownloaded error:', err);
-            // console.log('localPlaylistData+Downloaded', localPlaylistData);
             for (var id in localPlaylistData) {
                 if (localPlaylistData[id].downloaded === false) {
                     searchPleer({
@@ -53,7 +44,7 @@ getSpotifyPlaylist(function(error, spotifyPlaylist) {
                                         if (err) {
                                             throw err;
                                         } else {
-                                            console.log('Song ' + results[0].title
+                                            console.log('YouTube: ' + results[0].title
                                               + ' was downloaded: ' + res.file);
                                             updatePlaylistDataAfterDownload(notFound.spotifyId);
                                         }
@@ -65,13 +56,13 @@ getSpotifyPlaylist(function(error, spotifyPlaylist) {
                                 if (err) {
                                     console.log('Error on downloading from Pleer', err);
                                 }
-                                console.log('Downloaded from pleer:'.magenta, pleerData.filename);
+                                console.log('Downloaded from Pleer:'.magenta, pleerData.filename);
                                 updatePlaylistDataAfterDownload(pleerData.spotifyId);
                             });
                         }
                     });
                 } else {
-                    console.log(localPlaylistData[id].filename + ' already downloaded. Skipping.');
+                    console.log(('Skipping:' + localPlaylistData[id].filename).grey);
                 }
             }
         });
@@ -190,7 +181,7 @@ function deleteRemovedSongsReturnFile(localPlaylistFile, spotifyPlaylist) {
       JSON.stringify(localPlaylistFile),
         function(err) {
             if (err) {
-                console.log('problem writing to playlist file after deleting shit', err);
+                console.log('Problem writing to playlist file after deleting songs', err);
                 throw err;
             } else {
                 console.log('Local data file updated with deleted songs.');
@@ -226,7 +217,6 @@ function searchPleer(song, callback) {
                 var pleerSongId = $('ol.scrolledPagination li').attr('link');
                 if (typeof pleerSongId != 'undefined') {
                     if (typeof pleerSongId === 'string') {
-                        console.log('Found on Pleer:'.green, song.title);
                         callback(null, {
                             id: pleerSongId,
                             spotifyId: song.spotifyId,
@@ -283,7 +273,7 @@ function updatePlaylistDataAfterDownload(spotifyId) {
         JSON.stringify(globalPlaylist),
             function(err) {
                 if (err) {
-                    console.log('problem writing to playlist file after deleting shit', err);
+                    console.log('Problem writing to playlist file after downloading song:' + spotifyId, err);
                     throw err;
                 } else {
                     console.log('Local data file updated with downloaded song.', spotifyId);
