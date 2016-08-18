@@ -43,4 +43,4 @@ Drop the **carfi.sh** into your USB memory stick main folder for the AppleScript
 
 You will probably need to modify your the **carfi.sh** with the cloned git repo location.
 
-You will also need to put the **runOnCarfi.scpt** in **~/Library/Workflows/Applications/Folder Actions/** to make it run the AppleScript on USB.
+You will also need to put the **runOnUSB.scpt** in **~/Library/Workflows/Applications/Folder Actions/** to make it run the AppleScript on USB.
