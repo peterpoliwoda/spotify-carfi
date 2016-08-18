@@ -26,7 +26,7 @@ getSpotifyPlaylist(function(error, spotifyPlaylist) {
         checkIfDownloaded(localPlaylistData, spotifyPlaylist, function(err, localPlaylistData) {
             globalPlaylist = localPlaylistData;
             for (var id in localPlaylistData) {
-                if (localPlaylistData[id].downloaded === false) {
+                if (localPlaylistData[id].downloaded == false) {
                     searchPleer({
                         spotifyId: id,
                         title: localPlaylistData[id].artists + localPlaylistData[id].title,
@@ -130,14 +130,14 @@ function getPlaylistObject(playlistResponse) {
 
 // Returning playlistData.json or full playlist with downloaded flag equal false
 function getLocalPlaylistData(spotifyPlaylist, callback) {
-    fs.readFile(config.musicFolderPath + '_playlistData.json',
+    fs.readFile(config.musicFolderPath + '/_playlistData.json',
       function(err, playlistDataFile) {
           if (err) {
               if (err.code == 'ENOENT') {
                   for (var song in spotifyPlaylist) {
                       spotifyPlaylist[song].downloaded = false;
                   }
-                  fs.writeFile(config.musicFolderPath + '_playlistData.json',
+                  fs.writeFile(config.musicFolderPath + '/_playlistData.json',
                       JSON.stringify(spotifyPlaylist), function(err) {
                           if (err) {
                               callback(err, null);
@@ -167,7 +167,7 @@ function deleteRemovedSongsReturnFile(localPlaylistFile, spotifyPlaylist) {
                 console.log(('Deleting: '.red + localPlaylistFile[spotifyId].title).red);
 
                 // Remove the file that has been removed from the playlist
-                fs.unlink(config.musicFolderPath + localPlaylistFile[spotifyId].fileName,
+                fs.unlink(config.musicFolderPath + '/' + localPlaylistFile[spotifyId].fileName,
                   function(err) {
                       if (err) {
                           console.error('Error: file could not be removed.'.red);
@@ -177,7 +177,7 @@ function deleteRemovedSongsReturnFile(localPlaylistFile, spotifyPlaylist) {
             }
         }
     }
-    fs.writeFile(config.musicFolderPath + '_playlistData.json',
+    fs.writeFile(config.musicFolderPath + '/_playlistData.json',
       JSON.stringify(localPlaylistFile),
         function(err) {
             if (err) {
@@ -200,6 +200,14 @@ function checkIfDownloaded(localPlaylistFile, spotifyPlaylist, callback) {
                     localPlaylistFile[spotifyId] = spotifyPlaylist[spotifyId];
                     localPlaylistFile[spotifyId].downloaded = false;
                 }
+            }
+        }
+        for (var localFile in localPlaylistFile) {
+            try {
+                fs.readFileSync(config.musicFolderPath + '/' + localPlaylistFile[localFile].filename);
+                localPlaylistFile[localFile].downloaded = true;
+            } catch (ex) {
+                localPlaylistFile[spotifyId].downloaded = false;
             }
         }
         callback(null, localPlaylistFile);
@@ -251,7 +259,7 @@ function downloadFromPleer(pleerData, callback) {
         if (!error && response.statusCode === 200) {
             console.log('PLEER: Downloading ' + pleerData.filename + '...');
             request(JSON.parse(body).track_link)
-              .pipe(fs.createWriteStream(config.musicFolderPath + pleerData.filename))
+              .pipe(fs.createWriteStream(config.musicFolderPath + '/' + pleerData.filename))
               .on('error', function(err) {
                   console.log('ON error');
                   callback(err, null);
@@ -269,14 +277,12 @@ function downloadFromPleer(pleerData, callback) {
 
 function updatePlaylistDataAfterDownload(spotifyId) {
     globalPlaylist[spotifyId].downloaded = true;
-    fs.writeFile(config.musicFolderPath + '_playlistData.json',
+    fs.writeFile(config.musicFolderPath + '/_playlistData.json',
         JSON.stringify(globalPlaylist),
             function(err) {
                 if (err) {
                     console.log('Problem writing to playlist file after downloading song:' + spotifyId, err);
                     throw err;
-                } else {
-                    console.log('Local data file updated with downloaded song.', spotifyId);
                 }
             });
 }
