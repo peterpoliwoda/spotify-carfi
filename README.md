@@ -38,7 +38,9 @@ Before use you will need to update the **config.json** file with:
     * **SpotifyUserId:** owner of the above playlist    
  * *Optional: music folder* (defaults to ./music/)
 
-## Temporary USB solution
+## Temporary AppleScript USB solution
 Drop the **carfi.sh** into your USB memory stick main folder for the AppleScript to pick up. It will pop up an alert to confirm you plugged in the correct device and then another alert after it's finished copying your playlist songs to the USB drive.
 
 You will probably need to modify your the **carfi.sh** with the cloned git repo location.
+
+You will also need to put the **runOnCarfi.scpt** in **~/Library/Workflows/Applications/Folder Actions/** to make it run the AppleScript on USB.
