@@ -1,0 +1,4 @@
+{
+  "download": ["musicfile1.mp3", "musicfile2.mp3"],
+  "delete": ["musicfile3.mp3", "musicfile4.mp3"]
+}

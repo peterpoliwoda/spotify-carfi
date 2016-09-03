@@ -1,4 +1,4 @@
-config.json
+.gitignore
+./config.json
 node_modules/
 music/
-

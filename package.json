@@ -4,6 +4,7 @@
   "description": "Download Spotify playlist to your ZSun wifi adapter sdcard",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
     "express": "^4.13.4",
