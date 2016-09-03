@@ -217,41 +217,46 @@ function checkIfDownloaded(localPlaylistFile, spotifyPlaylist, callback) {
 }
 
 function searchPleer(song, callback) {
-    var pleerSearchPhrase = encodeURIComponent(song.title.replace(new RegExp('[ ]', 'g'), '+'));
-    request.get(config.pleer.searchUrl + pleerSearchPhrase,
-        function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                var $ = cheerio.load(body);
-                var pleerSongId = $('ol.scrolledPagination li').attr('link');
-                if (typeof pleerSongId != 'undefined') {
-                    if (typeof pleerSongId === 'string') {
-                        callback(null, {
-                            id: pleerSongId,
-                            spotifyId: song.spotifyId,
-                            filename: song.filename
-                        });
-                    } else {
-                        callback(null, {
-                            id: pleerSongId[0].toString(),
-                            spotifyId: song.spotifyId,
-                            filename: song.filename
-                        });
-                    }
-                } else {
-                    callback({
-                        spotifyId: song.spotifyId,
-                        songTitle: song.title,
-                        filename: song.filename,
-                        error: 'Not found on Pleer'}, null);
-                }
-            } else if (error) {
-                console.log('Unexpected error when searching pleer'.red + song.title);
-                callback({spotifyId: song.spotifyId,
-                          songTitle: song.title,
-                          filename: song.filename,
-                          error: 'Not found on Pleer'}, null);
-            }
-        });
+    callback({spotifyId: song.spotifyId,
+            songTitle: song.title,
+            filename: song.filename,
+            error: 'Not found on Pleer'}, null);
+
+    // var pleerSearchPhrase = encodeURIComponent(song.title.replace(new RegExp('[ ]', 'g'), '+'));
+    // request.get(config.pleer.searchUrl + pleerSearchPhrase,
+    //     function(error, response, body) {
+    //         if (!error && response.statusCode === 200) {
+    //             var $ = cheerio.load(body);
+    //             var pleerSongId = $('ol.scrolledPagination li').attr('link');
+    //             if (typeof pleerSongId != 'undefined') {
+    //                 if (typeof pleerSongId === 'string') {
+    //                     callback(null, {
+    //                         id: pleerSongId,
+    //                         spotifyId: song.spotifyId,
+    //                         filename: song.filename
+    //                     });
+    //                 } else {
+    //                     callback(null, {
+    //                         id: pleerSongId[0].toString(),
+    //                         spotifyId: song.spotifyId,
+    //                         filename: song.filename
+    //                     });
+    //                 }
+    //             } else {
+    //                 callback({
+    //                     spotifyId: song.spotifyId,
+    //                     songTitle: song.title,
+    //                     filename: song.filename,
+    //                     error: 'Not found on Pleer'}, null);
+    //             }
+    //         } else if (error) {
+    //             console.log('Unexpected error when searching pleer'.red + song.title);
+    //             callback({spotifyId: song.spotifyId,
+    //                       songTitle: song.title,
+    //                       filename: song.filename,
+    //                       error: 'Not found on Pleer'}, null);
+    //         }
+    //     });
 }
 
 function downloadFromPleer(pleerData, callback) {
