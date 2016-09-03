@@ -61,6 +61,8 @@ app.post('/carfi/download', function(req, res) {
     res.end(downloadThose);
 });
 
+app.use('/music', express.static('music'));
+
 var server = app.listen(3000, function() {
     var host = server.address().address;
     var port = server.address().port;
