@@ -19,6 +19,17 @@ app.post('/carfi', function(req, res) {
     res.end(list);
 });
 
+// GET carfi playlist folder
+app.get('/carfi/', function(req, res) {
+    fs.readdir(config.musicFolderPath, 'utf8', function(err, musicFolder) {
+        var folderContents = '## Car-Fi Playlist ##\n';
+        for (var i in musicFolder) {
+            folderContents += musicFolder[i] + '\n';
+        }
+        res.end(folderContents);
+    });
+});
+
 var toDelete = function(contents) {
     var playlistFiles = fs.readdirSync(config.musicFolderPath);
     var deleteThose = '';
