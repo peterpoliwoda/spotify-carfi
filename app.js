@@ -30,6 +30,13 @@ app.get('/carfi/', function(req, res) {
     });
 });
 
+// GET carfi playlist folder
+app.get('/carfi/car', function(req, res) {
+    fs.readFile('carfi.car', function(err, currentCarfiPlaylist) {
+        res.end(currentCarfiPlaylist);
+    });
+});
+
 var toDelete = function(contents) {
     var playlistFiles = fs.readdirSync(config.musicFolderPath);
     var deleteThose = '';
@@ -59,6 +66,16 @@ var toDownload = function(contents) {
     return downloadThose;
 };
 
+var saveCarFiPlaylist = function(contents) {
+    var currentCarfiPlaylist = '## Whats in the car ##\n';
+    for (var song in contents) {
+        currentCarfiPlaylist += contents[song] + '\n';
+    }
+    fs.writeFile('carfi.car', currentCarfiPlaylist, function(err) {
+        if (err) { return console.log(err); }
+    });
+};
+
 // POST carfi delete folder
 app.post('/carfi/delete', function(req, res) {
     var folderContents = req.body.split(';');
@@ -70,6 +87,7 @@ app.post('/carfi/delete', function(req, res) {
 app.post('/carfi/download', function(req, res) {
     var folderContents = req.body.split(';');
     var downloadThose = toDownload(folderContents);
+    saveCarFiPlaylist(folderContents);
     res.end(downloadThose);
 });
 
