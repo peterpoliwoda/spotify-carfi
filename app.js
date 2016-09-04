@@ -35,7 +35,7 @@ var toDelete = function(contents) {
     var deleteThose = '';
     for (var song in contents) {
         if (playlistFiles.indexOf(contents[song]) > -1 || contents[song] == ''
-        || contents[song].indexOf('.mp3') == -1) {
+        || contents[song].indexOf('.mp3') === -1) {
             console.log(contents[song] + ' found in files.'.green);
         } else {
             console.log('Delete: '.red + contents[song]);
@@ -49,7 +49,7 @@ var toDownload = function(contents) {
     var playlistFiles = fs.readdirSync(config.musicFolderPath);
     var downloadThose = '';
     for (var song in playlistFiles) {
-        if (contents.indexOf(playlistFiles[song]) > -1) {
+        if (contents.indexOf(playlistFiles[song]) > -1 || playlistFiles[song].indexOf('.mp3') === -1) {
             console.log(playlistFiles[song] + ' already downloaded.'.grey);
         } else {
             console.log('Download: '.yellow + playlistFiles[song]);
