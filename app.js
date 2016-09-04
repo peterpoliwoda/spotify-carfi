@@ -22,7 +22,7 @@ app.post('/carfi', function(req, res) {
 // GET carfi playlist folder
 app.get('/carfi/', function(req, res) {
     fs.readdir(config.musicFolderPath, function(err, musicFolder) {
-        var folderContents = '## Car-Fi Playlist ##\n';
+        var folderContents = 'Total: ' + musicFolder.length + '\n## Car-Fi Playlist ##\n';
         for (var i in musicFolder) {
             folderContents += musicFolder[i] + '\n';
         }
@@ -67,7 +67,7 @@ var toDownload = function(contents) {
 };
 
 var saveCarFiPlaylist = function(contents) {
-    var currentCarfiPlaylist = '## Whats in the car ##\n';
+    var currentCarfiPlaylist = 'Total: ' + contents.length + '\n## What\'s in the car ##\n';
     for (var song in contents) {
         currentCarfiPlaylist += contents[song] + '\n';
     }
