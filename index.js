@@ -21,7 +21,7 @@ app.post('/carfi', function(req, res) {
 
 // GET carfi playlist folder
 app.get('/carfi/', function(req, res) {
-    fs.readdir(config.musicFolderPath, 'utf8', function(err, musicFolder) {
+    fs.readdir(config.musicFolderPath, 'utf-8', function(err, musicFolder) {
         var folderContents = '## Car-Fi Playlist ##\n';
         for (var i in musicFolder) {
             folderContents += musicFolder[i] + '\n';
