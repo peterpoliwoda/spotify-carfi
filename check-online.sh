@@ -5,15 +5,17 @@
 COUNTER=0
 ONLINE=0
 
-while [ $COUNTER -lt 3 ]; do
+while [ $COUNTER -lt 18 ]; do
   ping -q -c5 google.com > /dev/null 2>&1
   if [ $? -eq 0 ]; then
-  	echo "device online"
+  	# device online
     ONLINE=1
+    echo "took him "$COUNTER > /mnt/sdcard/_howlong.txt
+    touch /tmp/COUNTER_$COUNTER.txt
     break
   else
     let COUNTER=COUNTER+1
-    echo "Not online just yet. Waiting..."
+    # Not online just yet. Waiting...
     sleep 5
   fi
 done
