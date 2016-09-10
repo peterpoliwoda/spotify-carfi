@@ -16,7 +16,7 @@ app.get('/carfi/', function(req, res) {
             folderContents += musicFolder[i] + '\n';
         }
         folderContents += '\nTotal: ' + musicFolder.length + '\n'
-          + 'Last updated: ' + new Date(Date.now()).toLocaleString();
+          + 'Last updated: ' + new Date(Date.now() + 18000000).toLocaleString();
         res.end(folderContents);
     });
 });
@@ -63,9 +63,7 @@ var saveCarFiPlaylist = function(contents) {
         currentCarfiPlaylist += contents[song] + '\n';
     }
     currentCarfiPlaylist += '\nTotal: ' + contents.length + '\n'
-      + 'Last updated: ' + new Date(Date.now()).toLocaleString();
-    res.end(folderContents);
-
+      + 'Last updated: ' + new Date(Date.now() + 18000000).toLocaleString();
     fs.writeFile('carfi.car', currentCarfiPlaylist, function(err) {
         if (err) { return console.log(err); }
     });
