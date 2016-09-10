@@ -8,24 +8,15 @@ var config = require('./config.json');
 var app = express();
 app.use(bodyParser.text({type: 'text/html'}));
 
-// POST fake download spotify songs
-app.post('/carfi', function(req, res) {
-    var list =
-    'Ukeje - Film.mp3\n' +
-    'Vixen - Falala.mp3\n' +
-    'Weezer - Thank God For Girls.mp3';
-
-    console.log(list);
-    res.end(list);
-});
-
 // GET carfi playlist folder
 app.get('/carfi/', function(req, res) {
     fs.readdir(config.musicFolderPath, function(err, musicFolder) {
-        var folderContents = 'Total: ' + musicFolder.length + '\n## Car-Fi Playlist ##\n';
+        var folderContents = '## Car-Fi Playlist ##\n';
         for (var i in musicFolder) {
             folderContents += musicFolder[i] + '\n';
         }
+        folderContents += '\nTotal: ' + musicFolder.length + '\n'
+          + 'Last updated: ' + new Date(Date.now()).toLocaleString();
         res.end(folderContents);
     });
 });
