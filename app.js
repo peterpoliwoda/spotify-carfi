@@ -58,10 +58,14 @@ var toDownload = function(contents) {
 };
 
 var saveCarFiPlaylist = function(contents) {
-    var currentCarfiPlaylist = 'Total: ' + contents.length + '\n## What\'s in the car ##\n';
+    var currentCarfiPlaylist = '## What\'s in the car ##\n';
     for (var song in contents) {
         currentCarfiPlaylist += contents[song] + '\n';
     }
+    currentCarfiPlaylist += '\nTotal: ' + contents.length + '\n'
+      + 'Last updated: ' + new Date(Date.now()).toLocaleString();
+    res.end(folderContents);
+
     fs.writeFile('carfi.car', currentCarfiPlaylist, function(err) {
         if (err) { return console.log(err); }
     });
