@@ -20,7 +20,7 @@ start() {
 	mount /dev/sda1 /mnt/sdcard
 	cd /mnt/sdcard
 
-	while [ $COUNTER -lt 3 ]; do
+	while [ $COUNTER -lt 8 ]; do
 	   ping -q -c5 google.com > /dev/null 2>&1
 	   if [ $? -eq 0 ]; then
  	     # device online
@@ -43,7 +43,7 @@ start() {
 	  while read DEL_SONG_NAME; do
 	    if [ -n "$DEL_SONG_NAME" ]; then
  	      logger "$DEL_SONG_NAME"
- 	      rm -rf /mnt/sdcard/$DEL_SONG_NAME
+ 	      rm -rf "/mnt/sdcard/$DEL_SONG_NAME"
 	    fi
 	  done <carfi.delete
 
@@ -52,13 +52,16 @@ start() {
 	    if [ -n "$NEW_SONG_NAME" ]; then
 	      logger "$NEW_SONG_NAME"
 	      wget "http://peterpoliwoda.me:3000/music/$NEW_SONG_NAME" -O "/mnt/sdcard/$NEW_SONG_NAME"
+	      logger "$(date)"
 	    fi
 	  done <carfi.download
 
 	  logger "Playlist refreshed."
 	fi
 
+	mv /tmp/carfi.* /mnt/sdcard/
 	logger "Remounting CarFi Card"
+	logger "$(date)"
 	echo "1" > /sys/class/gpio/gpio21/value
 }
 
