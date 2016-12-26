@@ -1,0 +1,18 @@
+{
+    "musicFolderPath": "./music",
+    "ffmpegPath": "/usr/local/bin/ffmpeg",
+    "pleer": {
+      "searchUrl": "http://pleer.com/search?q=",
+      "getUrl": "http://pleer.com/site_api/files/get_url"
+    },
+    "spotify": {
+        "clientId": "SPOTIFY_CLIENT_ID",
+        "clientSecret": "SPOTIFY_CLIENT_SECRET",
+        "publicPlaylistId": "SPOTIFY_PUBLIC_PLAYLIST_ID",
+        "userId": "SPOTIFY_USER_ID"
+    },
+    "youtube": {
+        "key": "YOUTUBE_API_KEY",
+        "maxResults": 3
+    }
+}
